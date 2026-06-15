@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke Generator</title>
+</head>
+<body>
+
+    <button onclick="getJoke()">Get Joke 😂</button>
+
+    <br><br>
+
+    <h3 id="joke"></h3>
+    <p id="answer"></p>
+
+    <script>
+        async function getJoke() {
+            try {
+                const res = await fetch("https://v2.jokeapi.dev/joke/Any");
+
+                if (!res.ok) {
+                    throw new Error("Failed to fetch joke");
+                }
+
+                const data = await res.json();
+
+                // Joke API has 2 types: single & two-part
+                if (data.type === "single") {
+                    document.getElementById("joke").textContent = data.joke;
+                    document.getElementById("answer").textContent = "";
+                } else {
+                    document.getElementById("joke").textContent = data.setup;
+                    document.getElementById("answer").textContent = data.delivery;
+                }
+
+            } catch (err) {
+                document.getElementById("joke").textContent = err.message;
+                document.getElementById("answer").textContent = "";
+            }
+        }
+    </script>
+
+</body>
+</html>
